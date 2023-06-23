@@ -168,14 +168,14 @@ struct CustomizeZapView: View {
             if model.zapping {
                 Text("Zapping...", comment: "Text to indicate that the app is in the process of sending a zap.")
             } else {
-                Button(NSLocalizedString("Zap", comment: "Button to send a zap.")) {
+                Button(NSLocalizedString("Zap User", comment: "Button to send a zap.")) {
                     let amount = model.custom_amount_sats
                     send_zap(damus_state: state, target: target, lnurl: lnurl, is_custom: true, comment: model.comment, amount_sats: amount, zap_type: model.zap_type)
                     model.zapping = true
                 }
                 .disabled(model.custom_amount_sats == 0 || model.custom_amount.isEmpty)
                 .font(.system(size: 28, weight: .bold))
-                .frame(width: 130, height: 50)
+                .frame(width: 180, height: 50)
                 .foregroundColor(.white)
                 .background(LINEAR_GRADIENT)
                 .opacity(model.custom_amount_sats == 0 || model.custom_amount.isEmpty ? 0.5 : 1.0)
@@ -216,12 +216,11 @@ struct CustomizeZapView: View {
         case .got_zap_invoice(let inv):
             if state.settings.show_wallet_selector {
                 model.invoice = inv
-                model.showing_wallet_selector = true
+                present_sheet(.select_wallet(invoice: inv))
             } else {
                 end_editing()
                 let wallet = state.settings.default_wallet.model
                 open_with_wallet(wallet: wallet, invoice: inv)
-                model.showing_wallet_selector = false
                 dismiss()
             }
         case .sent_from_nwc:
@@ -231,20 +230,24 @@ struct CustomizeZapView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 20) {
-            ZapTypeButton()
-                .padding(.top, 50)
-            
-            Spacer()
+            ScrollView {
+                HStack(alignment: .center) {
+                    UserView(damus_state: state, pubkey: target.pubkey)
+                    
+                    ZapTypeButton()
+                }
+                .padding([.horizontal, .top])
 
-            CustomZapTextField
-            
-            AmountPicker
-            
-            ZapReply
-            
-            ZapButton
-            
-            Spacer()
+                CustomZapTextField
+                
+                AmountPicker
+                
+                ZapReply
+                
+                ZapButton
+                
+                Spacer()
+            }
         }
         .sheet(isPresented: $model.show_zap_types) {
             if #available(iOS 16.0, *) {
@@ -254,9 +257,6 @@ struct CustomizeZapView: View {
             } else {
                 ZapPicker
             }
-        }
-        .sheet(isPresented: $model.showing_wallet_selector) {
-            SelectWalletView(default_wallet: state.settings.default_wallet, showingSelectWallet: $model.showing_wallet_selector, our_pubkey: state.pubkey, invoice: model.invoice)
         }
         .onAppear {
             model.set_defaults(settings: state.settings)
