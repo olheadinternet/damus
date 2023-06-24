@@ -32,16 +32,13 @@ struct ZapButton: View {
     let lnurl: String
     
     @ObservedObject var zaps: ZapsDataModel
+    @StateObject var button: ZapButtonModel = ZapButtonModel()
     
     var our_zap: Zapping? {
         zaps.zaps.first(where: { z in z.request.ev.pubkey == damus_state.pubkey })
     }
     
     var zap_img: String {
-        if damus_state.settings.nozaps {
-            return "zap"
-        }
-        
         switch our_zap {
         case .none:
             return "zap"
@@ -53,16 +50,19 @@ struct ZapButton: View {
     }
     
     var zap_color: Color {
-        if damus_state.settings.nozaps {
-            return Color.gray
-        }
-        
         if our_zap == nil {
             return Color.gray
         }
         
         // always orange !
         return Color.orange
+            /*
+        if our_zap.is_paid {
+            return Color.orange
+        } else {
+            return Color.yellow
+        }
+             */
     }
     
     func tap() {
@@ -124,7 +124,7 @@ struct ZapButton: View {
                     .frame(width:20, height: 20)
             })
 
-            if !damus_state.settings.nozaps && zaps.zap_total > 0 {
+            if zaps.zap_total > 0 {
                 Text(verbatim: format_msats_abbrev(zaps.zap_total))
                     .font(.footnote)
                     .foregroundColor(zap_color)
@@ -132,22 +132,43 @@ struct ZapButton: View {
         }
         .accessibilityLabel(NSLocalizedString("Zap", comment: "Accessibility label for zap button"))
         .simultaneousGesture(LongPressGesture().onEnded {_  in
-            // when we don't have nozaps mode enable, long press shows the zap customizer
-            if !damus_state.settings.nozaps {
-                present_sheet(.zap(target: target, lnurl: lnurl))
-            }
-            
-            // long press does nothing in nozaps mode
+            button.showing_zap_customizer = true
         })
         .highPriorityGesture(TapGesture().onEnded {
-            // when we have appstore mode on, only show the zap customizer as "user zaps"
-            if damus_state.settings.nozaps {
-                present_sheet(.zap(target: target, lnurl: lnurl))
-            } else {
-                // otherwise we restore the original behavior of one-tap zaps
-                tap()
-            }
+            tap()
         })
+        .sheet(isPresented: $button.showing_zap_customizer) {
+            CustomizeZapView(state: damus_state, target: target, lnurl: lnurl)
+        }
+        .sheet(isPresented: $button.showing_select_wallet, onDismiss: {button.showing_select_wallet = false}) {
+            SelectWalletView(default_wallet: damus_state.settings.default_wallet, showingSelectWallet: $button.showing_select_wallet, our_pubkey: damus_state.pubkey, invoice: button.invoice ?? "")
+        }
+        .onReceive(handle_notify(.zapping)) { notif in
+            let zap_ev = notif.object as! ZappingEvent
+            
+            guard zap_ev.target.id == self.target.id else {
+                return
+            }
+            
+            guard !zap_ev.is_custom else {
+                return
+            }
+            
+            switch zap_ev.type {
+            case .failed:
+                break
+            case .got_zap_invoice(let inv):
+                if damus_state.settings.show_wallet_selector {
+                    self.button.invoice = inv
+                    self.button.showing_select_wallet = true
+                } else {
+                    let wallet = damus_state.settings.default_wallet.model
+                    open_with_wallet(wallet: wallet, invoice: inv)
+                }
+            case .sent_from_nwc:
+                break
+            }
+        }
     }
 }
 
@@ -241,21 +262,17 @@ func send_zap(damus_state: DamusState, target: ZapTarget, lnurl: String, is_cust
                 }
                 
                 var flusher: OnFlush? = nil
-                
-                // donations are only enabled on one-tap zaps and off appstore
-                if !damus_state.settings.nozaps && !is_custom && damus_state.settings.donation_percent > 0 {
+                // Don't donate on custom zaps
+                if !is_custom && damus_state.settings.donation_percent > 0 {
                     flusher = .once({ pe in
                         // send donation zap when the pending zap is flushed, this allows user to cancel and not send a donation
-                        Task { @MainActor in
+                        Task.init { @MainActor in
                             await send_donation_zap(pool: damus_state.pool, postbox: damus_state.postbox, nwc: nwc_state.url, percent: damus_state.settings.donation_percent, base_msats: amount_msat)
                         }
                     })
                 }
                 
-                // we don't have a delay on one-tap nozaps (since this will be from customize zap view)
-                let delay = damus_state.settings.nozaps ? nil : 5.0
-                
-                let nwc_req = nwc_pay(url: nwc_state.url, pool: damus_state.pool, post: damus_state.postbox, invoice: inv, delay: delay, on_flush: flusher)
+                let nwc_req = nwc_pay(url: nwc_state.url,  pool: damus_state.pool, post: damus_state.postbox, invoice: inv, on_flush: flusher)
                 
                 guard let nwc_req, case .nwc(let pzap_state) = pending_zap_state else {
                     print("nwc: failed to send nwc request for zapreq \(reqid.reqid)")

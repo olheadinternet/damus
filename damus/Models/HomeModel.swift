@@ -52,7 +52,6 @@ class HomeModel {
     var notifications = NotificationsModel()
     var notification_status = NotificationStatusModel()
     var events: EventHolder = EventHolder()
-    var zap_button: ZapButtonModel = ZapButtonModel()
     
     init() {
         self.damus_state = DamusState.empty
