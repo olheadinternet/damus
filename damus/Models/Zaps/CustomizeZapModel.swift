@@ -15,6 +15,7 @@ class CustomizeZapModel: ObservableObject {
     @Published var zap_type: ZapType = .pub
     @Published var invoice: String = ""
     @Published var error: String? = nil
+    @Published var showing_wallet_selector: Bool = false
     @Published var zapping: Bool = false
     @Published var show_zap_types: Bool = false
     
