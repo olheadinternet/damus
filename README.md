@@ -1,127 +1,21 @@
-[![Run Test Suite](https://github.com/damus-io/damus/actions/workflows/run-tests.yaml/badge.svg?branch=master)](https://github.com/damus-io/damus/actions/workflows/run-tests.yaml)
+# sideus
 
-# damus
-
-A twitter-like [nostr][nostr] client for iPhone, iPad and MacOS.
-
-<img src="./ss.png" width="50%" height="50%" />
+A twitter-like [nostr][nostr] client for iPhone, iPad and MacOS. Sideload Build.
 
 [nostr]: https://github.com/fiatjaf/nostr
 
-## Spec Compliance
 
-damus implements the following [Nostr Implementation Possibilities][nips]
+## How to sideload
 
-- [NIP-01: Basic protocol flow][nip01]
-- [NIP-08: Mentions][nip08]
-- [NIP-10: Reply conventions][nip10]
-- [NIP-12: Generic tag queries (hashtags)][nip12]
+**Step 1:** Install [altstore](https://altstore.io/) (I recommend following their guides, I invite you to download their Nintendo emulator Delta to make sure you are familiar with the altstore process)
 
-[nips]: https://github.com/nostr-protocol/nips
-[nip01]: https://github.com/nostr-protocol/nips/blob/master/01.md
-[nip08]: https://github.com/nostr-protocol/nips/blob/master/08.md
-[nip10]: https://github.com/nostr-protocol/nips/blob/master/10.md
-[nip12]: https://github.com/nostr-protocol/nips/blob/master/12.md
+Step 2: download Sideus.ipa to your iOS device grab it from [sideus.app/](https://sideus.app/)
 
-## Getting Started on Damus 
+Step 3: 
+	- open altstore and go to the My Apps page 
+	- click the + in the top left hand corner 
+	- browse to your download section and select the downloaded .ipa
+	- as long as you're still connected to your computer, the mail app is open and the extension has been loaded properly Sideus should now be side loaded onto your device.
+	- Unless you have a developer account, you will need to come back to altstore every 7 days and Refresh with altstore server running on your computer.
 
-### Damus iOS
-1) Get the Damus app on the iOS App Store: https://apps.apple.com/ca/app/damus/id1628663131
-
-#### ⚙️ Settings (gear icon, top right)
-- Relays: You can add more relays to send your notes to by tapping the "+". 
-  - Find more relays to add: https://nostr.info/relays/ 
-- Public Key (pubkey): Your public, personal address and how people can find and tag you
- - Secret Key: Your *private* key unique to you. Never share your private key publically and share with other clients at your own risk!
-   - Save your keys somewhere safe
- - Log out
-
-#### 🏠 Personal Feed (home icon, bottom navigation)
-- Feed from everyone you follow
-- Can post notes by tapping the blue + button
-
-#### Notes (under 🏠 Personal Feed)
-- Sending a Note is easy and it goes to both your 🏠 Personal and 🔍 Global Feeds 
-- To tag a user you must grab their pubkey:
-  1. Search their username in the search bar at the top of the 🔍 Global Feed and click their profile
-  2. Tap the 🔑 icon which will copy their pubkey to your clipboard
-  3. Go back to your 🏠 Personal Feed and tap the blue + button to compose your Note
-  4. Add @ direcly followed by the pubkey (e.g., `@npub1xtscya34g58tk0z605fvr788k263gsu6cy9x0mhnm87echrgufzsevkk5s`)
-- You can also long-press a Note to grab their User ID aka pubkey or Note ID to link directly to a Note.
-- Currently you can't delete your Notes in the iOS app
-- Share images by pasting the image url which you can grab from imgbb, imgur, etc. (i.e., `https://i.ibb.co/2SHZbwm/alpha60.jpg`). Currently images only load for people you follow in the 🏠 Personal Feed. Images are not automatically loaded in 🔍 Global Feed
-- Engaging with Notes
-  - 💬 Replying to a Note: Tap the chat icon underneath the note. This will show up in the users’ notifications and in your 🏠 Personal and 🔍 Global Feeds
-  - ♺ Reposts: Tap the repost icon which will show up in your 🏠 Personal and 🔍 Global Feeds
-  - ♡ Likes: Tap the heart icon. Users will not get a notification, and cannot see who liked their note (currently, web clients can see your pfp only)
-- Formatting Notes (may not format as intended in other web clients)
-  - Italics: 1 asterisk `*italic*`
-  - Bold: 2 asterisk `**bold**`
-  - Strikethrough: 1 tildes `~strikethrough~`
-  - Code: 1 back-tick `` `code` ``
-
-#### 💬 Encrypted DMs (chat app, bottom navigation)
-- Tap the chat icon and you'll notice there's nothing to see at first. Go to a user profile and tap the 💬 chat icon next to the follow button to begin a DM
-
-#### 🔍 Global Feed (magnify glass, bottom navigation)
-- View the Global Feed from all the relays you've added in ⚙️ Settings. Currently you can only search hashtags and user names and pubkeys
-
-#### 🔔 Notifications
-- All your notifications except 💬 DMs
-
-#### 👤 Change Your Profile (PFP) and Bio
-1. Go to your Profile Page on Damus app
-2. Tap on Edit button at the top
-3. You will see text fields to update your information and bio
-4. For PFP, insert a URL containing your image (support video: https://cdn.jb55.com/vid/pfp-editor.mp4)
-5. Save
-
-#### ⚡️ Request Sats 
-    (Sats or Satoshis are the smallest denomination of bitcoin)
-	
-**Alby (browser extension)**
-- Get the [Alby](https://getalby.com/) browser extension and create your Alby address [yourname]@getalby.com or connect your existing Lightning wallet
-- Convert your Damus secret key from nsec to hex at https://damus.io/key then go to Settings in Alby and under the Nostr section at the bottom of the page add your private hex key. You can also generate new address in the extension
-- Click the Alby extension > click Receive > enter the amount of Sats > click Get Invoice > click Copy > then paste into Damus
-- Note: On Damus Web it will appear as a string of characters but on Damus iOS it will appear as a clickable image
-
-**Zeus (mobile app)**
-- Download [Zeus](https://zeusln.app/) app (iOS, Google, APK)
-- Tap Get Started button > tap Connect a node > click on + sign (top right) > select Indhub > press Scan Lndhub QR > (from the Alby browser extension… click your account on the top left > click Manage Accounts > click 3-dot menu to right of your account and click Export Account to get a QR code then go back to Zeus app) > scan the QR Code and tap Save Node Config button
-- To create an invoice tap Lightning > tap Receive > type in amount > tap Create Invoice > tap Copy Invoice > paste into a new Damus note
-
-## Contributing
-
-Contributors welcome! Start by examining known issues: https://github.com/damus-io/damus/issues.
-
-### Code
-
-[Email patches][git-send-email] to jb55@jb55.com are preferred, but I accept PRs on GitHub as well.
-
-[git-send-email]: http://git-send-email.io
-
-### Privacy
-Your internet protocol (IP) address is exposed to the relays you connect to, and third party media hosters (e.g. nostr.build, imgur.com, giphy.com, youtube.com etc.) that render on Damus. If you want to improve your privacy, consider utilizing a service that masks your IP address (e.g. a VPN) from trackers online.
-
-The relay also learns which public keys you are requesting, meaning your public key will be tied to your IP address.
-
-### Translations
-
-Translators welcome! Join the [Transifex][transifex] project.
-
-All user-facing strings must have a comment in order to provide context to translators. If a SwiftUI component has a `comment` parameter, use that. Otherwise, wrap your string with `NSLocalizedString` with the `comment` field populated.
-
-[transifex]: https://explore.transifex.com/damus/damus-ios/
-
-### Awards
-
-There may be nostr badges awarded for contributors in the future... :)
-
-First contributors:
-
-1. @randymcmillan
-2. @jcarucci27
-
-### git log bot
-
-npub1fjtdwclt9lspjy8huu3qklr7eklp5uq90u6yh8mec290pqxraccqlufnas
+Step 4: one tap zap me (don't worry the wallet setting splits still go to will and the damus team for all their work that i just forked and reskinned to allow us to side-load)
