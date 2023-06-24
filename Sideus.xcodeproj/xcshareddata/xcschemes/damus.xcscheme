@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4CE6DEE227F7A08100C66700"
-               BuildableName = "damus.app"
-               BlueprintName = "damus"
-               ReferencedContainer = "container:damus.xcodeproj">
+               BuildableName = "Sideus.app"
+               BlueprintName = "Sideus"
+               ReferencedContainer = "container:Sideus.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "4CE6DEF227F7A08200C66700"
                BuildableName = "damusTests.xctest"
                BlueprintName = "damusTests"
-               ReferencedContainer = "container:damus.xcodeproj">
+               ReferencedContainer = "container:Sideus.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -45,13 +45,13 @@
                BlueprintIdentifier = "4CE6DEFC27F7A08200C66700"
                BuildableName = "damusUITests.xctest"
                BlueprintName = "damusUITests"
-               ReferencedContainer = "container:damus.xcodeproj">
+               ReferencedContainer = "container:Sideus.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Release"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -65,9 +65,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4CE6DEE227F7A08100C66700"
-            BuildableName = "damus.app"
-            BlueprintName = "damus"
-            ReferencedContainer = "container:damus.xcodeproj">
+            BuildableName = "Sideus.app"
+            BlueprintName = "Sideus"
+            ReferencedContainer = "container:Sideus.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -82,9 +82,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4CE6DEE227F7A08100C66700"
-            BuildableName = "damus.app"
-            BlueprintName = "damus"
-            ReferencedContainer = "container:damus.xcodeproj">
+            BuildableName = "Sideus.app"
+            BlueprintName = "Sideus"
+            ReferencedContainer = "container:Sideus.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

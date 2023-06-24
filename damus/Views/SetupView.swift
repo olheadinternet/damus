@@ -35,12 +35,12 @@ struct SetupView: View {
                         .frame(width: 56, height: 56, alignment: .center)
                         .padding(.top, 20.0)
 
-                    Text("Welcome to Damus", comment: "Welcome text shown on the first screen when user is not logged in.")
+                    Text("Welcome to Sideus", comment: "Welcome text shown on the first screen when user is not logged in.")
                         .font(.title)
                         .fontWeight(.heavy)
                         .foregroundStyle(DamusLogoGradient.gradient)
 
-                    Text("The go-to iOS Nostr client", comment: "Quick description of what Damus is")
+                    Text("The sideloaded iOS Nostr client", comment: "Quick description of what Damus is")
                         .foregroundColor(DamusColors.mediumGrey)
                         .padding(.top, 10)
                     

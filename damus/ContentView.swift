@@ -212,7 +212,7 @@ struct ContentView: View {
                         Image("damus-home")
                             .resizable()
                             .frame(width:30,height:30)
-                            .shadow(color: DamusColors.purple, radius: 2)
+                            .shadow(color: DamusColors.purple, radius: 1)
                             .opacity(isSideBarOpened ? 0 : 1)
                             .animation(isSideBarOpened ? .none : .default, value: isSideBarOpened)
                     } else {

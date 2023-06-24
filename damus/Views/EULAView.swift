@@ -12,7 +12,7 @@ let eula = """
 
 **Introduction**
 
-This End User License Agreement ("EULA") is a legal agreement between you and Damus Nostr Inc. for the use of our mobile application Damus. By installing, accessing, or using our application, you agree to be bound by the terms and conditions of this EULA.
+This End User License Agreement ("EULA") is a legal agreement between you and Sideus for the use of our mobile application Sideus. By installing, accessing, or using our application, you agree to be bound by the terms and conditions of this EULA.
 
 **Prohibited Content and Conduct**
 
@@ -39,7 +39,7 @@ Any violation of this EULA, including the prohibited content and conduct outline
 
 **Disclaimer of Warranties and Limitation of Liability**
 
-Our application is provided "as is" and "as available" without warranty of any kind, either express or implied, including but not limited to the implied warranties of merchantability and fitness for a particular purpose. We do not guarantee that our application will be uninterrupted or error-free. In no event shall Damus Nostr Inc. be liable for any damages whatsoever, including but not limited to direct, indirect, special, incidental, or consequential damages, arising out of or in connection with the use or inability to use our application.
+Our application is provided "as is" and "as available" without warranty of any kind, either express or implied, including but not limited to the implied warranties of merchantability and fitness for a particular purpose. We do not guarantee that our application will be uninterrupted or error-free. In no event shall Damus Nostr Inc. or Sideus be liable for any damages whatsoever, including but not limited to direct, indirect, special, incidental, or consequential damages, arising out of or in connection with the use or inability to use our application.
 
 **Changes to EULA**
 
@@ -47,7 +47,7 @@ We reserve the right to update or modify this EULA at any time and without prior
 
 **Contact Information**
 
-If you have any questions about this EULA, please contact us at damus@jb55.com
+If you have any questions about this EULA, please contact us at sideus.app
 
 **Acceptance of Terms**
 
