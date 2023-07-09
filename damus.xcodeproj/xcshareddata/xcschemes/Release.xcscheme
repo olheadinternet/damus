@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4CE6DEE227F7A08100C66700"
-               BuildableName = "damus.app"
-               BlueprintName = "damus"
+               BuildableName = "sideus.app"
+               BlueprintName = "sideus"
                ReferencedContainer = "container:damus.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -65,8 +65,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4CE6DEE227F7A08100C66700"
-            BuildableName = "damus.app"
-            BlueprintName = "damus"
+            BuildableName = "sideus.app"
+            BlueprintName = "sideus"
             ReferencedContainer = "container:damus.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -82,8 +82,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4CE6DEE227F7A08100C66700"
-            BuildableName = "damus.app"
-            BlueprintName = "damus"
+            BuildableName = "sideus.app"
+            BlueprintName = "sideus"
             ReferencedContainer = "container:damus.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

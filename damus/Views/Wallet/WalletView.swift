@@ -94,7 +94,7 @@ struct WalletView: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(.white)
                 
-                Text("An additional percentage of each zap will be sent to support Damus development", comment: "Text indicating that they can contribute zaps to support Damus development.")
+                Text("An additional percentage of each zap will be sent to support Damus development, You read that right, this still goes to Will & the Damus team.", comment: "Text indicating that they can contribute zaps to support Damus development.")
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(.white)
                 
