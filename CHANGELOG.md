@@ -1,3 +1,96 @@
+## [1.6-6] - 2023-07-16
+
+### Added
+
+- New markdown renderer (William Casarin)
+- Added feedback when user adds a relay that is already on the list (Daniel D'Aquino)
+
+### Changed
+
+- Hide nsec when logging in (cr0bar)
+- Remove nip05 on events (William Casarin)
+- Rename NIP05 to "nostr address" (William Casarin)
+
+### Fixed
+
+- Fixed issue where hashtags were leaking in DMs (William Casarin)
+- Fix issue with emojis next to hashtags and urls (William Casarin)
+- relay detail view is not immediately available after adding new relay (Bryan Montz)
+- Fix nostr:nostr:... bugs (William Casarin)
+
+
+[1.6-6]: https://github.com/damus-io/damus/releases/tag/v1.6-6
+
+## [1.6-4] - 2023-07-13
+
+### Added
+
+- Add the ability to follow hashtags (William Casarin)
+
+### Changed
+
+- Remove note size restriction for longform events (William Casarin)
+
+### Fixed
+
+- Hide users and hashtags from home timeline when you unfollow (William Casarin)
+- Fixed a bug where following a user might not work due to poor connectivity (William Casarin)
+- Icon color for developer mode setting is incorrect in low-light mode (Bryan Montz)
+- Fixed nav bar color on login, eula, and account creation (ericholguin)
+
+
+### Removed
+
+- Remove following Damus Will by default (William Casarin)
+
+[1.6-4]: https://github.com/damus-io/damus/releases/tag/v1.6-4
+
+## [1.6-3] - 2023-07-11
+
+### Changed
+
+- Start at top when reading longform events (William Casarin)
+- Allow reposting and quote reposting multiple times (William Casarin)
+
+
+### Fixed
+
+- Show longform previews in notifications instead of the entire post (William Casarin)
+- Fix padding on longform events (William Casarin)
+- Fix action bar appearing on quoted longform previews (William Casarin)
+
+
+[1.6-3]: https://github.com/damus-io/damus/releases/tag/v1.6-3
+## [1.6-2] - 2023-07-11
+
+### Added
+
+- Add support for multilingual hashtags (cr0bar)
+- Add r tag when mentioning a url (William Casarin)
+- Add initial longform note support (William Casarin)
+- Enable banner image editing (Joel Klabo)
+- Add relay log in developer mode (Bryan Montz)
+
+
+### Fixed
+
+- Fix lag when creating large posts (William Casarin)
+- Fix npub mentions failing to parse in some cases (William Casarin)
+- Fix PostView initial string to skip mentioning self when on own profile (Terry Yiu)
+- Fix freezing bug when tapping Developer settings menu (Terry Yiu)
+- Fix potential fake profile zap attacks (William Casarin)
+- Fix issue where malicious zappers can send fake zaps to another user's posts (William Casarin)
+- Fix profile post button mentions (cr0bar)
+- Fix icons on settings view (cr0bar)
+- Fix Invalid Zap bug in reposts (William Casarin)
+
+
+### Removed
+
+- Remove old @ and & hex key mentions (William Casarin)
+
+
+[1.6-2]: https://github.com/damus-io/damus/releases/tag/v1.6-2
 ## [1.6] - 2023-07-04
 
 ### Added
@@ -1305,4 +1398,5 @@
 
 
 [0.1.2]: https://github.com/damus-io/damus/releases/tag/v0.1.2
+
 

@@ -4,7 +4,6 @@ A twitter-like [nostr][nostr] client for iPhone, iPad and MacOS. Sideload Build.
 
 [nostr]: https://github.com/fiatjaf/nostr
 
-
 ## How to sideload
 
 **Step 1:** Install [altstore](https://altstore.io/) (I recommend following their guides, I invite you to download their Nintendo emulator Delta to make sure you are familiar with the altstore process)

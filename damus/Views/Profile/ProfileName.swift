@@ -35,16 +35,8 @@ struct ProfileName: View {
     @State var display_name: DisplayName?
     @State var nip05: NIP05?
     @State var donation: Int?
-
-    init(pubkey: String, profile: Profile?, damus: DamusState, show_nip5_domain: Bool = true) {
-        self.pubkey = pubkey
-        self.profile = profile
-        self.prefix = ""
-        self.show_nip5_domain = show_nip5_domain
-        self.damus_state = damus
-    }
     
-    init(pubkey: String, profile: Profile?, prefix: String, damus: DamusState, show_nip5_domain: Bool = true) {
+    init(pubkey: String, profile: Profile?, prefix: String = "", damus: DamusState, show_nip5_domain: Bool = true) {
         self.pubkey = pubkey
         self.profile = profile
         self.prefix = prefix
@@ -92,10 +84,12 @@ struct ProfileName: View {
             Text(verbatim: "\(prefix)\(name_choice)")
                 .font(.body)
                 .fontWeight(prefix == "@" ? .none : .bold)
+            /*
             if let nip05 = current_nip05 {
                 NIP05Badge(nip05: nip05, pubkey: pubkey, contacts: damus_state.contacts, show_domain: show_nip5_domain, clickable: true)
             }
-            if let friend = friend_type, current_nip05 == nil {
+             */
+            if let friend = friend_type {
                 FriendIcon(friend: friend)
             }
             if onlyzapper {

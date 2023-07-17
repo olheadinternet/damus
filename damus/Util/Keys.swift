@@ -72,6 +72,14 @@ func bech32_pubkey(_ pubkey: String) -> String? {
     return bech32_encode(hrp: "npub", bytes)
 }
 
+func bech32_pubkey_decode(_ pubkey: String) -> String? {
+    guard let decoded = try? bech32_decode(pubkey), decoded.hrp == "npub" else {
+        return nil
+    }
+
+    return hex_encode(decoded.data)
+}
+
 func bech32_nopre_pubkey(_ pubkey: String) -> String? {
     guard let bytes = hex_decode(pubkey) else {
         return nil
@@ -93,14 +101,16 @@ func generate_new_keypair() -> Keypair {
     return Keypair(pubkey: pubkey, privkey: privkey)
 }
 
-func privkey_to_pubkey(privkey: String) -> String? {
-    guard let sec = hex_decode(privkey) else {
-        return nil
-    }
+func privkey_to_pubkey_raw(sec: [UInt8]) -> String? {
     guard let key = try? secp256k1.Signing.PrivateKey(rawRepresentation: sec) else {
         return nil
     }
     return hex_encode(Data(key.publicKey.xonly.bytes))
+}
+
+func privkey_to_pubkey(privkey: String) -> String? {
+    guard let sec = hex_decode(privkey) else { return nil }
+    return privkey_to_pubkey_raw(sec: sec)
 }
 
 func save_pubkey(pubkey: String) {

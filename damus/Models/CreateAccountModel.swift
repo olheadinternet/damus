@@ -14,8 +14,8 @@ class CreateAccountModel: ObservableObject {
     @Published var about: String = ""
     @Published var pubkey: String = ""
     @Published var privkey: String = ""
-    @Published var profile_image: String? = nil
-    
+    @Published var profile_image: URL? = nil
+
     var pubkey_bech32: String {
         return bech32_pubkey(self.pubkey) ?? ""
     }
@@ -35,13 +35,7 @@ class CreateAccountModel: ObservableObject {
         return Keypair(pubkey: self.pubkey, privkey: self.privkey)
     }
     
-    init() {
-        let keypair = generate_new_keypair()
-        self.pubkey = keypair.pubkey
-        self.privkey = keypair.privkey!
-    }
-    
-    init(real: String, nick: String, about: String) {
+    init(real: String = "", nick: String = "", about: String = "") {
         let keypair = generate_new_keypair()
         self.pubkey = keypair.pubkey
         self.privkey = keypair.privkey!

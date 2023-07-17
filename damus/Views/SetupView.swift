@@ -61,15 +61,9 @@ struct SetupView: View {
                     .padding()
                 }
             }
-            .background(
-                Image("login-header")
-                    .resizable()
-                    .frame(maxWidth: .infinity, maxHeight: 300, alignment: .center)
-                    .ignoresSafeArea(),
-                alignment: .top
-            )
+            .background(DamusBackground(maxHeight: 300), alignment: .top)
             .navigationDestination(for: Route.self) { route in
-                route.view(navigationCordinator: navigationCoordinator, damusState: DamusState.empty)
+                route.view(navigationCoordinator: navigationCoordinator, damusState: DamusState.empty)
             }
         }
         .navigationBarTitleDisplayMode(.inline)

@@ -14,14 +14,7 @@ struct RecommendedRelayView: View {
     
     @Binding var showActionButtons: Bool
     
-    init(damus: DamusState, relay: String, showActionButtons: Binding<Bool>) {
-        self.damus = damus
-        self.relay = relay
-        self.add_button = true
-        self._showActionButtons = showActionButtons
-    }
-    
-    init(damus: DamusState, relay: String, add_button: Bool, showActionButtons: Binding<Bool>) {
+    init(damus: DamusState, relay: String, add_button: Bool = true, showActionButtons: Binding<Bool>) {
         self.damus = damus
         self.relay = relay
         self.add_button = add_button
@@ -37,11 +30,11 @@ struct RecommendedRelayView: View {
                     }
                 }
                 
-                RelayType(is_paid: damus.relay_metadata.lookup(relay_id: relay)?.is_paid ?? false)
+                RelayType(is_paid: damus.relay_model_cache.model(with_relay_id: relay)?.metadata.is_paid ?? false)
                 
                 Text(relay).layoutPriority(1)
 
-                if let meta = damus.relay_metadata.lookup(relay_id: relay) {
+                if let meta = damus.relay_model_cache.model(with_relay_id: relay)?.metadata {
                     NavigationLink(value: Route.RelayDetail(relay: relay, metadata: meta)){
                         EmptyView()
                     }

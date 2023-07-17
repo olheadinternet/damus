@@ -10,8 +10,16 @@ import SwiftUI
 struct RelayView: View {
     let state: DamusState
     let relay: String
+    @ObservedObject private var model_cache: RelayModelCache
     
     @Binding var showActionButtons: Bool
+    
+    init(state: DamusState, relay: String, showActionButtons: Binding<Bool>) {
+        self.state = state
+        self.relay = relay
+        self.model_cache = state.relay_model_cache
+        _showActionButtons = showActionButtons
+    }
     
     var body: some View {
         Group {
@@ -25,9 +33,9 @@ struct RelayView: View {
                     }
                 }
                 
-                RelayType(is_paid: state.relay_metadata.lookup(relay_id: relay)?.is_paid ?? false)
+                RelayType(is_paid: state.relay_model_cache.model(with_relay_id: relay)?.metadata.is_paid ?? false)
                 
-                if let meta = state.relay_metadata.lookup(relay_id: relay) {
+                if let meta = model_cache.model(with_relay_id: relay)?.metadata {
                     Text(relay)
                         .background(
                             NavigationLink(value: Route.RelayDetail(relay: relay, metadata: meta), label: {

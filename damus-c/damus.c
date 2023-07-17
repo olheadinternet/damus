@@ -180,9 +180,9 @@ static int parse_invoice(struct cursor *cur, struct note_block *block) {
 static int parse_mention_bech32(struct cursor *cur, struct note_block *block) {
     u8 *start = cur->p;
     
-    if (!parse_str(cur, "nostr:"))
-        return 0;
-    
+    parse_char(cur, '@');
+    parse_str(cur, "nostr:");
+
     block->block.str.start = (const char *)cur->p;
     
     if (!parse_nostr_bech32(cur, &block->block.mention_bech32.bech32)) {
@@ -216,6 +216,7 @@ int damus_parse_content(struct note_blocks *blocks, const char *content) {
     struct note_block block;
     u8 *start, *pre_mention;
     
+    blocks->words = 0;
     blocks->num_blocks = 0;
     make_cursor((u8*)content, (u8*)content + strlen(content), &cur);
     
@@ -224,8 +225,13 @@ int damus_parse_content(struct note_blocks *blocks, const char *content) {
         cp = peek_char(&cur, -1);
         c  = peek_char(&cur, 0);
         
+        // new word
+        if (is_whitespace(cp) && !is_whitespace(c)) {
+            blocks->words++;
+        }
+        
         pre_mention = cur.p;
-        if (cp == -1 || is_whitespace(cp) || c == '#') {
+        if (cp == -1 || is_left_boundary(cp) || c == '#') {
             if (c == '#' && (parse_mention_index(&cur, &block) || parse_hashtag(&cur, &block))) {
                 if (!add_text_then_block(&cur, blocks, block, &start, pre_mention))
                     return 0;
@@ -238,7 +244,7 @@ int damus_parse_content(struct note_blocks *blocks, const char *content) {
                 if (!add_text_then_block(&cur, blocks, block, &start, pre_mention))
                     return 0;
                 continue;
-            } else if (c == 'n' && parse_mention_bech32(&cur, &block)) {
+            } else if ((c == 'n' || c == '@') && parse_mention_bech32(&cur, &block)) {
                 if (!add_text_then_block(&cur, blocks, block, &start, pre_mention))
                     return 0;
                 continue;

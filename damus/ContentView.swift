@@ -142,7 +142,7 @@ struct ContentView: View {
     func contentTimelineView(filter: (@escaping (NostrEvent) -> Bool)) -> some View {
         ZStack {
             if let damus = self.damus_state {
-                TimelineView(events: home.events, loading: .constant(false), damus: damus, show_friend_icon: false, filter: filter)
+                TimelineView<AnyView>(events: home.events, loading: .constant(false), damus: damus, show_friend_icon: false, filter: filter)
             }
         }
     }
@@ -285,7 +285,7 @@ struct ContentView: View {
                         SideMenuView(damus_state: damus, isSidebarVisible: $isSideBarOpened.animation())
                     )
                     .navigationDestination(for: Route.self) { route in
-                        route.view(navigationCordinator: navigationCoordinator, damusState: damus_state!)
+                        route.view(navigationCoordinator: navigationCoordinator, damusState: damus_state!)
                     }
                     .onReceive(handle_notify(.switched_timeline)) { _ in
                         navigationCoordinator.popToRoot()
@@ -395,16 +395,19 @@ struct ContentView: View {
             }
         }
         .onReceive(handle_notify(.unfollow)) { notif in
-            guard let state = self.damus_state else {
-                return
-            }
-            handle_unfollow(state: state, notif: notif)
+            guard let state = self.damus_state else { return }
+            _ = handle_unfollow_notif(state: state, notif: notif)
+        }
+        .onReceive(handle_notify(.unfollowed)) { notif in
+            let unfollow = notif.object as! ReferencedId
+            home.resubscribe(.unfollowing(unfollow))
         }
         .onReceive(handle_notify(.follow)) { notif in
-            guard let state = self.damus_state else {
-                return
-            }
-            handle_follow(state: state, notif: notif)
+            guard let state = self.damus_state else { return }
+            guard handle_follow_notif(state: state, notif: notif) else { return }
+        }
+        .onReceive(handle_notify(.followed)) { notif in
+            home.resubscribe(.following)
         }
         .onReceive(handle_notify(.post)) { notif in
             guard let state = self.damus_state,
@@ -487,10 +490,7 @@ struct ContentView: View {
                 selected_timeline = .dms
                 damus_state.dms.set_active_dm(target.pubkey)
                 navigationCoordinator.push(route: Route.DMChat(dms: damus_state.dms.active_model))
-            case .like: fallthrough
-            case .zap: fallthrough
-            case .mention: fallthrough
-            case .repost:
+            case .like, .zap, .mention, .repost:
                 open_event(ev: target)
             case .profile_zap:
                 // Handled separately above.
@@ -609,24 +609,24 @@ struct ContentView: View {
 
     func connect() {
         let pool = RelayPool()
-        let metadatas = RelayMetadatas()
+        let model_cache = RelayModelCache()
         let relay_filters = RelayFilters(our_pubkey: pubkey)
         let bootstrap_relays = load_bootstrap_relays(pubkey: pubkey)
-        
-        let new_relay_filters = load_relay_filters(pubkey) == nil
-        for relay in bootstrap_relays {
-            if let url = RelayURL(relay) {
-                let descriptor = RelayDescriptor(url: url, info: .rw)
-                add_new_relay(relay_filters: relay_filters, metadatas: metadatas, pool: pool, descriptor: descriptor, new_relay_filters: new_relay_filters)
-            }
-        }
-        
-        pool.register_handler(sub_id: sub_id, handler: home.handle_event)
         
         // dumb stuff needed for property wrappers
         UserSettingsStore.pubkey = pubkey
         let settings = UserSettingsStore()
         UserSettingsStore.shared = settings
+        
+        let new_relay_filters = load_relay_filters(pubkey) == nil
+        for relay in bootstrap_relays {
+            if let url = RelayURL(relay) {
+                let descriptor = RelayDescriptor(url: url, info: .rw)
+                add_new_relay(model_cache: model_cache, relay_filters: relay_filters, pool: pool, descriptor: descriptor, new_relay_filters: new_relay_filters, logging_enabled: settings.developer_mode)
+            }
+        }
+        
+        pool.register_handler(sub_id: sub_id, handler: home.handle_event)
         
         if let nwc_str = settings.nostr_wallet_connect,
            let nwc = WalletConnectURL(str: nwc_str) {
@@ -646,7 +646,7 @@ struct ContentView: View {
                                       lnurls: LNUrls(),
                                       settings: settings,
                                       relay_filters: relay_filters,
-                                      relay_metadata: metadatas,
+                                      relay_model_cache: model_cache,
                                       drafts: Drafts(),
                                       events: EventCache(),
                                       bookmarks: BookmarksManager(pubkey: pubkey),
@@ -856,7 +856,7 @@ func find_event(state: DamusState, query query_: FindEvent, callback: @escaping 
                 }
                 state.pool.unsubscribe(sub_id: subid, to: [relay_id])
             }
-        case .notice(_):
+        case .notice:
             break
         }
 
@@ -879,51 +879,75 @@ func timeline_name(_ timeline: Timeline?) -> String {
     }
 }
 
-func handle_unfollow(state: DamusState, notif: Notification) {
-    guard let privkey = state.keypair.privkey else {
-        return
+@discardableResult
+func handle_unfollow(state: DamusState, unfollow: ReferencedId) -> Bool {
+    guard let keypair = state.keypair.to_full() else {
+        return false
     }
-    
-    let target = notif.object as! FollowTarget
-    let pk = target.pubkey
-    let old_contacts = state.contacts.event
-    
-    if let ev = unfollow_user(postbox: state.postbox,
-                              our_contacts: old_contacts,
-                              pubkey: state.pubkey,
-                              privkey: privkey,
-                              unfollow: pk) {
-        notify(.unfollowed, pk)
 
-        state.contacts.event = ev
-        state.contacts.remove_friend(pk)
+    let old_contacts = state.contacts.event
+
+    guard let ev = unfollow_reference(postbox: state.postbox, our_contacts: old_contacts, keypair: keypair, unfollow: unfollow)
+    else {
+        return false
+    }
+
+    notify(.unfollowed, unfollow)
+
+    state.contacts.event = ev
+
+    if unfollow.key == "p" {
+        state.contacts.remove_friend(unfollow.ref_id)
         state.user_search_cache.updateOwnContactsPetnames(id: state.pubkey, oldEvent: old_contacts, newEvent: ev)
     }
+
+    return true
 }
 
-func handle_follow(state: DamusState, notif: Notification) {
-    guard let privkey = state.keypair.privkey else {
-        return
+func handle_unfollow_notif(state: DamusState, notif: Notification) -> ReferencedId? {
+    let target = notif.object as! FollowTarget
+    let pk = target.pubkey
+
+    let ref = ReferencedId.p(pk)
+    if handle_unfollow(state: state, unfollow: ref) {
+        return ref
     }
 
+    return nil
+}
+
+@discardableResult
+func handle_follow(state: DamusState, follow: ReferencedId) -> Bool {
+    guard let keypair = state.keypair.to_full() else {
+        return false
+    }
+
+    guard let ev = follow_reference(box: state.postbox, our_contacts: state.contacts.event, keypair: keypair, follow: follow)
+    else {
+        return false
+    }
+
+    notify(.followed, follow)
+
+    state.contacts.event = ev
+    if follow.key == "p" {
+        state.contacts.add_friend_pubkey(follow.ref_id)
+    }
+
+    return true
+}
+
+@discardableResult
+func handle_follow_notif(state: DamusState, notif: Notification) -> Bool {
     let fnotify = notif.object as! FollowTarget
-
-    if let ev = follow_user(pool: state.pool,
-                            our_contacts: state.contacts.event,
-                            pubkey: state.pubkey,
-                            privkey: privkey,
-                            follow: ReferencedId(ref_id: fnotify.pubkey, relay_id: nil, key: "p")) {
-        notify(.followed, fnotify.pubkey)
-        
-        state.contacts.event = ev
-        
-        switch fnotify {
-        case .pubkey(let pk):
-            state.contacts.add_friend_pubkey(pk)
-        case .contact(let ev):
-            state.contacts.add_friend_contact(ev)
-        }
+    switch fnotify {
+    case .pubkey(let pk):
+        state.contacts.add_friend_pubkey(pk)
+    case .contact(let ev):
+        state.contacts.add_friend_contact(ev)
     }
+
+    return handle_follow(state: state, follow: .p(fnotify.pubkey))
 }
 
 func handle_post_notification(keypair: FullKeypair, postbox: PostBox, events: EventCache, notif: Notification) -> Bool {

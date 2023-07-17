@@ -36,6 +36,14 @@ struct ReferencedId: Identifiable, Hashable, Equatable {
     static func e(_ id: String, relay_id: String? = nil) -> ReferencedId {
         return ReferencedId(ref_id: id, relay_id: relay_id, key: "e")
     }
+
+    static func p(_ pk: String, relay_id: String? = nil) -> ReferencedId {
+        return ReferencedId(ref_id: pk, relay_id: relay_id, key: "p")
+    }
+
+    static func t(_ hashtag: String, relay_id: String? = nil) -> ReferencedId {
+        return ReferencedId(ref_id: hashtag, relay_id: relay_id, key: "t")
+    }
 }
 
 class NostrEvent: Codable, Identifiable, CustomStringConvertible, Equatable, Hashable, Comparable {
@@ -68,11 +76,11 @@ class NostrEvent: Codable, Identifiable, CustomStringConvertible, Equatable, Has
     let content: String
     
     var is_textlike: Bool {
-        return kind == 1 || kind == 42
+        return kind == 1 || kind == 42 || kind == 30023
     }
     
     var too_big: Bool {
-        return self.content.utf8.count > 16000
+        return known_kind != .longform && self.content.utf8.count > 16000
     }
     
     var should_show_event: Bool {
@@ -83,8 +91,8 @@ class NostrEvent: Codable, Identifiable, CustomStringConvertible, Equatable, Has
         return calculate_event_id(ev: self) == self.id
     }
     
-    private var _blocks: [Block]? = nil
-    func blocks(_ privkey: String?) -> [Block] {
+    private var _blocks: Blocks? = nil
+    func blocks(_ privkey: String?) -> Blocks {
         if let bs = _blocks {
             return bs
         }
@@ -93,8 +101,8 @@ class NostrEvent: Codable, Identifiable, CustomStringConvertible, Equatable, Has
         return blocks
     }
 
-    func get_blocks(content: String) -> [Block] {
-        return parse_mentions(content: content, tags: self.tags)
+    func get_blocks(content: String) -> Blocks {
+        return parse_note_content(content: content, tags: self.tags)
     }
 
     private lazy var inner_event: NostrEvent? = {
@@ -118,7 +126,7 @@ class NostrEvent: Codable, Identifiable, CustomStringConvertible, Equatable, Has
         if let rs = _event_refs {
             return rs
         }
-        let refs = interpret_event_refs(blocks: self.blocks(privkey), tags: self.tags)
+        let refs = interpret_event_refs(blocks: self.blocks(privkey).blocks, tags: self.tags)
         self._event_refs = refs
         return refs
     }
@@ -232,7 +240,7 @@ class NostrEvent: Codable, Identifiable, CustomStringConvertible, Equatable, Has
     func note_language(_ privkey: String?) -> String? {
         // Rely on Apple's NLLanguageRecognizer to tell us which language it thinks the note is in
         // and filter on only the text portions of the content as URLs and hashtags confuse the language recognizer.
-        let originalBlocks = blocks(privkey)
+        let originalBlocks = blocks(privkey).blocks
         let originalOnlyText = originalBlocks.compactMap { $0.is_text }.joined(separator: " ")
 
         // Only accept language recognition hypothesis if there's at least a 50% probability that it's accurate.
@@ -453,10 +461,8 @@ func make_first_contact_event(keypair: Keypair) -> NostrEvent? {
     
     let relay_json = encode_json(relays)!
     let damus_pubkey = "3efdaebb1d8923ebd99c9e7ace3b4194ab45512e2be79c1b7d68d9243e0d2681"
-    let jb55_pubkey = "32e1827635450ebb3c5a7d12c1f8e7b2b514439ac10a67eef3d9fd9c5c68e245" // lol
     let tags = [
         ["p", damus_pubkey],
-        ["p", jb55_pubkey],
         ["p", keypair.pubkey] // you're a friend of yourself!
     ]
     let ev = NostrEvent(content: relay_json,
@@ -942,7 +948,7 @@ func last_etag(tags: [[String]]) -> String? {
 }
 
 func first_eref_mention(ev: NostrEvent, privkey: String?) -> Mention? {
-    let blocks = ev.blocks(privkey).filter { block in
+    let blocks = ev.blocks(privkey).blocks.filter { block in
         guard case .mention(let mention) = block else {
             return false
         }
