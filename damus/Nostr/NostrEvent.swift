@@ -183,7 +183,7 @@ class NostrEvent: Codable, Identifiable, CustomStringConvertible, Equatable, Has
     }
 
     private func get_referenced_ids(key: String) -> [ReferencedId] {
-        return Sideus.get_referenced_ids(tags: self.tags, key: key)
+        return Zideus.get_referenced_ids(tags: self.tags, key: key)
     }
 
     public func direct_replies(_ privkey: String?) -> [ReferencedId] {
@@ -498,7 +498,7 @@ func make_boost_event(pubkey: String, privkey: String, boosted: NostrEvent) -> N
     return ev
 }
 
-func make_like_event(pubkey: String, privkey: String, liked: NostrEvent, content: String = "🤙") -> NostrEvent {
+func make_like_event(pubkey: String, privkey: String, liked: NostrEvent, content: String = "🖖") -> NostrEvent {
     var tags: [[String]] = liked.tags.filter { tag in tag.count >= 2 && (tag[0] == "e" || tag[0] == "p") }
     tags.append(["e", liked.id])
     tags.append(["p", liked.pubkey])
