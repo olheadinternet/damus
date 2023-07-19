@@ -205,7 +205,7 @@ extension NostrEventOld {
     }
 
     private func get_referenced_ids(key: String) -> [ReferencedId] {
-        return damus.get_referenced_ids(tags: self.tags, key: key)
+        return Sideus.get_referenced_ids(tags: self.tags, key: key)
     }
 
     public func direct_replies(_ privkey: String?) -> [ReferencedId] {
