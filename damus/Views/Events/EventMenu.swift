@@ -71,6 +71,12 @@ struct MenuItems: View {
 
         Group {
             Button {
+                UIPasteboard.general.string = bech32_note_id(event.id) ?? event.id
+            } label: {
+                Label(NSLocalizedString("Copy note ID", comment: "Context menu option for copying the ID of the note."), image: "note-book")
+            }
+            
+            Button {
                 UIPasteboard.general.string = event.get_content(keypair.privkey)
             } label: {
                 Label(NSLocalizedString("Copy text", comment: "Context menu option for copying the text from an note."), image: "copy2")
@@ -81,12 +87,6 @@ struct MenuItems: View {
 //            } label: {
 //               Label(NSLocalizedString("Copy user public key", comment: "Context menu option for copying the ID of the user who created the note."), image: "user")
 //            }
-
-            Button {
-                UIPasteboard.general.string = bech32_note_id(event.id) ?? event.id
-            } label: {
-                Label(NSLocalizedString("Copy note ID", comment: "Context menu option for copying the ID of the note."), image: "note-book")
-            }
 
             if settings.developer_mode {
                 Button {
