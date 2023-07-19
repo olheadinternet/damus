@@ -19,11 +19,11 @@ struct CustomHashtag {
         self.offset = offset
     }
     
-    static let coffee = CustomHashtag(name: "coffee", color: DamusColors.brown, offset: -1.0)
-    static let bitcoin = CustomHashtag(name: "bitcoin", color: Color.orange, offset: -3.0)
-    static let nostr = CustomHashtag(name: "nostr", color: DamusColors.purple, offset: -2.0)
-    static let plebchain = CustomHashtag(name: "plebchain", color: DamusColors.deepPurple, offset: -3.0)
-    static let zap = CustomHashtag(name: "zap", color: DamusColors.yellow, offset: -4.0)
+    static let coffee = CustomHashtag(name: "coffee", color: DamusColors.green, offset: -1.0)
+    static let bitcoin = CustomHashtag(name: "bitcoin", color: Color.green, offset: -3.0)
+    static let nostr = CustomHashtag(name: "nostr", color: DamusColors.green, offset: -2.0)
+    static let plebchain = CustomHashtag(name: "plebchain", color: DamusColors.green, offset: -3.0)
+    static let zap = CustomHashtag(name: "zap", color: DamusColors.green, offset: -4.0)
 }
 
 
