@@ -127,12 +127,12 @@ struct MenuItems: View {
             
             // Only allow reporting if logged in with private key and the currently viewed profile is not the logged in profile.
             if keypair.pubkey != target_pubkey && keypair.privkey != nil {
-                Button(role: .destructive) {
-                    let target: ReportTarget = .note(ReportNoteTarget(pubkey: target_pubkey, note_id: event.id))
-                    notify(.report, target)
-                } label: {
-                    Label(NSLocalizedString("Report", comment: "Context menu option for reporting content."), image: "raising-hand")
-                }
+//                Button(role: .destructive) {
+//                    let target: ReportTarget = .note(ReportNoteTarget(pubkey: target_pubkey, note_id: event.id))
+//                    notify(.report, target)
+//                } label: {
+//                    Label(NSLocalizedString("Report", comment: "Context menu option for reporting content."), image: "raising-hand")
+//                }
                 
                 Button(role: .destructive) {
                     notify(.mute, target_pubkey)
