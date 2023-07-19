@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "damus-home@1x.png",
+      "filename" : "spurple 43.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "damus-home@2x.png",
+      "filename" : "spurple 86.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "damus-home@3x.png",
+      "filename" : "spurple 130.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
