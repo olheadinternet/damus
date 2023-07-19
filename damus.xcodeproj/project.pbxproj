@@ -764,7 +764,7 @@
 		4CE4F8CC281352B30009DFBB /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		4CE4F9DD2852768D00C00DD9 /* ConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigView.swift; sourceTree = "<group>"; };
 		4CE4F9E228528C5200C00DD9 /* AddRelayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRelayView.swift; sourceTree = "<group>"; };
-		4CE6DEE327F7A08100C66700 /* Sideus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sideus.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4CE6DEE327F7A08100C66700 /* Zideus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Zideus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CE6DEE627F7A08100C66700 /* damusApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = damusApp.swift; sourceTree = "<group>"; };
 		4CE6DEE827F7A08100C66700 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4CE6DEEA27F7A08200C66700 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -1515,7 +1515,7 @@
 		4CE6DEE427F7A08100C66700 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4CE6DEE327F7A08100C66700 /* Sideus.app */,
+				4CE6DEE327F7A08100C66700 /* Zideus.app */,
 				4CE6DEF327F7A08200C66700 /* damusTests.xctest */,
 				4CE6DEFD27F7A08200C66700 /* damusUITests.xctest */,
 			);
@@ -1717,9 +1717,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4CE6DEE227F7A08100C66700 /* Sideus */ = {
+		4CE6DEE227F7A08100C66700 /* Zideus */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4CE6DF0727F7A08200C66700 /* Build configuration list for PBXNativeTarget "Sideus" */;
+			buildConfigurationList = 4CE6DF0727F7A08200C66700 /* Build configuration list for PBXNativeTarget "Zideus" */;
 			buildPhases = (
 				4CE6DEDF27F7A08100C66700 /* Sources */,
 				4CE6DEE027F7A08100C66700 /* Frameworks */,
@@ -1729,7 +1729,7 @@
 			);
 			dependencies = (
 			);
-			name = Sideus;
+			name = Zideus;
 			packageProductDependencies = (
 				4C649880286E0EE300EAE2B3 /* secp256k1 */,
 				4C06670328FC7EC500038D2A /* Kingfisher */,
@@ -1737,7 +1737,7 @@
 				4C27C9312A64766F007DBC75 /* MarkdownUI */,
 			);
 			productName = damus;
-			productReference = 4CE6DEE327F7A08100C66700 /* Sideus.app */;
+			productReference = 4CE6DEE327F7A08100C66700 /* Zideus.app */;
 			productType = "com.apple.product-type.application";
 		};
 		4CE6DEF227F7A08200C66700 /* damusTests */ = {
@@ -1847,7 +1847,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4CE6DEE227F7A08100C66700 /* Sideus */,
+				4CE6DEE227F7A08100C66700 /* Zideus */,
 				4CE6DEF227F7A08200C66700 /* damusTests */,
 				4CE6DEFC27F7A08200C66700 /* damusUITests */,
 			);
@@ -2248,12 +2248,12 @@
 /* Begin PBXTargetDependency section */
 		4CE6DEF527F7A08200C66700 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4CE6DEE227F7A08100C66700 /* Sideus */;
+			target = 4CE6DEE227F7A08100C66700 /* Zideus */;
 			targetProxy = 4CE6DEF427F7A08200C66700 /* PBXContainerItemProxy */;
 		};
 		4CE6DEFF27F7A08200C66700 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4CE6DEE227F7A08100C66700 /* Sideus */;
+			target = 4CE6DEE227F7A08100C66700 /* Zideus */;
 			targetProxy = 4CE6DEFE27F7A08200C66700 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -2506,7 +2506,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = damus/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Sideus;
+				INFOPLIST_KEY_CFBundleDisplayName = Zideus;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Damus needs access to your camera if you want to upload photos from it";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Local authentication to access private key";
@@ -2528,7 +2528,7 @@
 					"$(PROJECT_DIR)",
 				);
 				MARKETING_VERSION = "0.6 (1.6.7)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sideus.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zideus.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
@@ -2555,7 +2555,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = damus/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Sideus;
+				INFOPLIST_KEY_CFBundleDisplayName = Zideus;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Damus needs access to your camera if you want to upload photos from it";
 				INFOPLIST_KEY_NSFaceIDUsageDescription = "Local authentication to access private key";
@@ -2577,7 +2577,7 @@
 					"$(PROJECT_DIR)",
 				);
 				MARKETING_VERSION = "0.6 (1.6.7)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sideus.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zideus.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
@@ -2677,7 +2677,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4CE6DF0727F7A08200C66700 /* Build configuration list for PBXNativeTarget "Sideus" */ = {
+		4CE6DF0727F7A08200C66700 /* Build configuration list for PBXNativeTarget "Zideus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4CE6DF0827F7A08200C66700 /* Debug */,
