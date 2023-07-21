@@ -1,1 +1,2 @@
-# zideus - zach's personal version of sideus, a side-loadable release of damus
+# zideus
+zach's personal version of sideus, a side-loadable release of damus
