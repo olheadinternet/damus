@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-fileprivate let damus_grad_c1 = hex_col(r: 0xd3, g: 0x4c, b: 0xd9)
-fileprivate let damus_grad_c2 = hex_col(r: 0xf8, g: 0x69, b: 0xb6)
+fileprivate let damus_grad_c1 = hex_col(r: 0xe7, g: 0xc4, b: 0x83)
+fileprivate let damus_grad_c2 = hex_col(r: 0xf5, g: 0x95, b: 0x21)
 fileprivate let pink_grad = [damus_grad_c1, damus_grad_c2]
 
 let PinkGradient = LinearGradient(colors: pink_grad, startPoint: .topTrailing, endPoint: .bottom)

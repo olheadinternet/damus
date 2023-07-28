@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-fileprivate let damus_logo_grad_c1 = hex_col(r: 0x30, g: 0xb3, b: 0xf1)
-fileprivate let damus_logo_grad_c2 = hex_col(r: 0xc5, g: 0x39, b: 0xf9)
+fileprivate let damus_logo_grad_c1 = hex_col(r: 0xf5, g: 0x95, b: 0x21)
+fileprivate let damus_logo_grad_c2 = hex_col(r: 0xe7, g: 0xc4, b: 0x83)
 fileprivate let damus_logo_grad = [damus_logo_grad_c1, damus_logo_grad_c2]
 
 struct DamusLogoGradient: View {
